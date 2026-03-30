@@ -4,8 +4,8 @@ Benchmark suite for comparing LLM inference backends on Apple Silicon. Measures 
 
 ## Hardware
 
-| | |
-|---|---|
+| Spec | Detail |
+|------|--------|
 | **Machine** | MacBook Pro, Apple M4 Max |
 | **Memory** | 48 GB unified |
 | **OS** | macOS |
