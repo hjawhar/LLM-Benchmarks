@@ -76,7 +76,7 @@ def cli() -> None:
 )
 def run(config_path: Path, quality: bool, output_dir: Path) -> None:
     """Run benchmarks from a configuration file."""
-    from llm_bench.report import CLIReporter, HTMLReporter
+    from llm_bench.report import CLIReporter, HTMLReporter, MarkdownReporter
     from llm_bench.runner import BenchmarkRunner
     from llm_bench.storage import ResultsDB
 
@@ -107,7 +107,10 @@ def run(config_path: Path, quality: bool, output_dir: Path) -> None:
 
     output_dir.mkdir(parents=True, exist_ok=True)
     HTMLReporter.generate(results, output_dir)
-    console.print(f"\n[dim]HTML report written to {output_dir}/index.html[/]")
+    md_path = output_dir / "RESULTS.md"
+    MarkdownReporter.generate(results, md_path)
+    console.print(f"\n[dim]HTML report: {output_dir}/index.html[/]")
+    console.print(f"[dim]Markdown report: {md_path}[/]")
 
 
 # ---------------------------------------------------------------------------
@@ -141,7 +144,7 @@ def run(config_path: Path, quality: bool, output_dir: Path) -> None:
 )
 def report(db_path: Path, output_dir: Path, fmt: str) -> None:
     """Generate reports from existing benchmark results."""
-    from llm_bench.report import CLIReporter, HTMLReporter
+    from llm_bench.report import CLIReporter, HTMLReporter, MarkdownReporter
     from llm_bench.storage import ResultsDB
 
     if not db_path.exists():
@@ -166,7 +169,10 @@ def report(db_path: Path, output_dir: Path, fmt: str) -> None:
     if fmt in ("html", "both"):
         output_dir.mkdir(parents=True, exist_ok=True)
         HTMLReporter.generate(results, output_dir)
-        console.print(f"[green]HTML report written to:[/] {output_dir}/index.html")
+        md_path = output_dir / "RESULTS.md"
+        MarkdownReporter.generate(results, md_path)
+        console.print(f"[green]HTML report:[/] {output_dir}/index.html")
+        console.print(f"[green]Markdown report:[/] {md_path}")
 
 
 # ---------------------------------------------------------------------------

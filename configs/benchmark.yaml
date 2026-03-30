@@ -9,9 +9,10 @@ backends:
 
 prompts:
   - builtin: short_qa
+  - builtin: app_generation
 
 settings:
-  max_tokens: 128
+  max_tokens: 2048
   runs_per_config: 3
   warmup_runs: 1
   cool_down_seconds: 2.0
