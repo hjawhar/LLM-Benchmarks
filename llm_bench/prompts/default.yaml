@@ -1,0 +1,29 @@
+short_qa:
+  - name: "general_knowledge"
+    text: "What is the capital of France? Answer in one sentence."
+  - name: "math_reasoning"
+    text: "What is 15% of 240? Show your work step by step."
+  - name: "definition"
+    text: "Define 'photosynthesis' in exactly two sentences."
+
+long_generation:
+  - name: "essay"
+    text: "Write a 500-word essay about the impact of artificial intelligence on healthcare."
+  - name: "story"
+    text: "Write a short story about a robot learning to paint. Include dialogue."
+  - name: "explanation"
+    text: "Explain how a compiler works, from source code to machine code, in detail."
+
+code_completion:
+  - name: "python_function"
+    text: "Write a Python function that implements a binary search tree with insert, search, and delete operations. Include type hints."
+  - name: "algorithm"
+    text: "Implement merge sort in Python with full documentation and time complexity analysis."
+  - name: "api_endpoint"
+    text: "Write a FastAPI endpoint that handles file uploads, validates file type and size, and stores metadata in a database."
+
+summarization:
+  - name: "technical"
+    text: "Summarize the following: Large language models (LLMs) are AI systems trained on vast amounts of text data to understand and generate human language. They use transformer architectures with attention mechanisms to process sequences of tokens. Training involves predicting the next token in a sequence, which requires massive computational resources. Fine-tuning adapts pre-trained models to specific tasks. Recent advances include instruction tuning, RLHF, and mixture of experts architectures."
+  - name: "concise"
+    text: "In exactly 3 bullet points, summarize the key advantages of renewable energy over fossil fuels."
