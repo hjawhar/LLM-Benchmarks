@@ -9,6 +9,7 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING
 
 from llm_bench.backends.base import BackendError
+from llm_bench.metrics import measure_memory
 from llm_bench.models import TimingMetrics
 
 if TYPE_CHECKING:
@@ -105,14 +106,12 @@ class MLXLMBackend:
         tps = output_tokens / total_s if total_s > 0 and output_tokens else 0.0
 
         metrics = TimingMetrics(
-            ttft_ms=None,  # mlx_lm.generate doesn't expose first-token time
+            ttft_ms=total_ns / 1_000_000,  # non-streaming: TTFT ~ total time
             tps=tps,
-            prompt_eval_tps=None,
+            prompt_eval_tps=prompt_tokens / total_s if total_s > 0 and prompt_tokens else 0.0,
             model_load_time_s=getattr(self, "_last_load_ms", 0.0) / 1000,
-            peak_memory_mb=None,
+            peak_memory_mb=measure_memory(),
             total_duration_s=total_s,
-            output_tokens=output_tokens,
-            prompt_tokens=prompt_tokens,
         )
         return text, metrics
 

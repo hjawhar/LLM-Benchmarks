@@ -6,6 +6,7 @@ import time
 from collections.abc import Iterator
 
 from llm_bench.backends.base import BackendError
+from llm_bench.metrics import measure_memory
 from llm_bench.models import TimingMetrics
 
 
@@ -121,15 +122,17 @@ class OllamaBackend:
             else 0.0
         )
 
+        # TTFT approximation: prompt eval duration is the closest proxy
+        # in non-streaming mode (time before first output token).
+        ttft_ms = prompt_eval_duration_ns / 1_000_000 if prompt_eval_duration_ns > 0 else 0.0
+
         metrics = TimingMetrics(
-            ttft_ms=None,
+            ttft_ms=ttft_ms,
             tps=tps,
             prompt_eval_tps=prompt_eval_tps,
             model_load_time_s=load_duration_ns / 1_000_000_000,
-            peak_memory_mb=None,
+            peak_memory_mb=measure_memory(),
             total_duration_s=total_duration_ns / 1_000_000_000,
-            output_tokens=eval_count,
-            prompt_tokens=prompt_eval_count,
         )
         return text, metrics
 
