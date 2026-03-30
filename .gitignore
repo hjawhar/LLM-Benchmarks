@@ -27,3 +27,7 @@ benchmarks/results.db-*
 
 # uv
 uv.lock
+
+
+# Model files (large binaries)
+models/

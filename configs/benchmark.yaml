@@ -7,6 +7,10 @@ backends:
     models:
       - llama3.2:3b
 
+  - name: llama-cpp
+    models:
+      - models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
+
 prompts:
   - builtin: short_qa
   - builtin: app_generation

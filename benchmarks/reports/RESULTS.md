@@ -4,38 +4,51 @@
 
 | Backend | Model | Runs | TTFT (ms) | TPS (tok/s) | Load (s) | Memory (MB) | Total (s) |
 | ------- | ----- | ---: | --------: | ----------: | -------: | ----------: | --------: |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | 12 | 5630.1 ± 5354.6 | 178.0 ± 15.9 | 1.6 ± 0.0 | 2103.1 ± 2.1 | 5.6 ± 5.4 |
-| ollama | llama3.2:3b | 12 | 45.9 ± 25.2 | 162.6 ± 30.4 | 1.5 ± 0.0 | 2106.4 ± 0.0 | 2.3 ± 3.3 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | 12 | 6021.0 ± 9377.8 | 79.9 ± 11.8 | 1.3 ± 0.0 | 6258.5 ± 16.4 | 6.0 ± 9.4 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | 12 | 5647.6 ± 5372.4 | 177.6 ± 15.3 | 1.1 ± 0.0 | 2116.5 ± 1.8 | 5.6 ± 5.4 |
+| ollama | llama3.2:3b | 12 | 46.7 ± 25.7 | 162.2 ± 27.6 | 2.2 ± 0.0 | 2117.6 ± 0.0 | 2.6 ± 3.7 |
 
 ### Per-Prompt Breakdown
 
 | Backend | Model | Prompt | Run | TTFT (ms) | TPS (tok/s) | Total (s) |
 | ------- | ----- | ------ | --: | --------: | ----------: | --------: |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 1 | 10555.3 | 194.1 | 10.56 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 2 | 10599.7 | 193.3 | 10.60 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 3 | 10609.8 | 193.1 | 10.61 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 1 | 582.0 | 183.8 | 0.58 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 1 | 10550.9 | 194.2 | 10.55 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 2 | 10607.9 | 193.2 | 10.61 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 3 | 10657.0 | 192.3 | 10.66 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 1 | 587.4 | 182.2 | 0.59 |
 | mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 2 | 628.9 | 170.1 | 0.63 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 3 | 629.0 | 170.1 | 0.63 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 1 | 369.6 | 167.8 | 0.37 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 2 | 409.4 | 151.4 | 0.41 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 3 | 414.9 | 149.4 | 0.41 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 1 | 10794.4 | 189.8 | 10.79 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 2 | 10959.8 | 187.0 | 10.96 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 3 | 11008.4 | 186.1 | 11.01 |
-| ollama | llama3.2:3b | general_knowledge | 1 | 12.5 | 191.5 | 0.13 |
-| ollama | llama3.2:3b | general_knowledge | 2 | 60.5 | 192.2 | 0.20 |
-| ollama | llama3.2:3b | general_knowledge | 3 | 60.8 | 195.2 | 0.19 |
-| ollama | llama3.2:3b | math_reasoning | 1 | 11.1 | 166.4 | 0.77 |
-| ollama | llama3.2:3b | math_reasoning | 2 | 64.6 | 171.5 | 1.08 |
-| ollama | llama3.2:3b | math_reasoning | 3 | 66.0 | 173.0 | 0.84 |
-| ollama | llama3.2:3b | definition | 1 | 11.3 | 172.6 | 0.47 |
-| ollama | llama3.2:3b | definition | 2 | 61.4 | 173.3 | 0.57 |
-| ollama | llama3.2:3b | definition | 3 | 60.0 | 171.1 | 0.56 |
-| ollama | llama3.2:3b | express_app | 1 | 12.9 | 111.0 | 7.13 |
-| ollama | llama3.2:3b | express_app | 2 | 62.9 | 110.5 | 9.63 |
-| ollama | llama3.2:3b | express_app | 3 | 66.9 | 123.5 | 5.88 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 3 | 634.5 | 168.6 | 0.63 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 1 | 370.5 | 167.3 | 0.37 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 2 | 408.9 | 151.6 | 0.41 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 3 | 408.1 | 151.9 | 0.41 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 1 | 10872.5 | 188.5 | 10.87 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 2 | 11085.3 | 184.8 | 11.09 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 3 | 10959.2 | 187.0 | 10.96 |
+| ollama | llama3.2:3b | general_knowledge | 1 | 12.9 | 190.3 | 0.13 |
+| ollama | llama3.2:3b | general_knowledge | 2 | 59.5 | 190.5 | 0.20 |
+| ollama | llama3.2:3b | general_knowledge | 3 | 63.5 | 190.4 | 0.20 |
+| ollama | llama3.2:3b | math_reasoning | 1 | 10.4 | 165.9 | 0.91 |
+| ollama | llama3.2:3b | math_reasoning | 2 | 63.5 | 169.9 | 0.82 |
+| ollama | llama3.2:3b | math_reasoning | 3 | 64.0 | 170.1 | 0.87 |
+| ollama | llama3.2:3b | definition | 1 | 12.2 | 171.2 | 0.47 |
+| ollama | llama3.2:3b | definition | 2 | 63.6 | 169.9 | 0.57 |
+| ollama | llama3.2:3b | definition | 3 | 62.8 | 170.7 | 0.57 |
+| ollama | llama3.2:3b | express_app | 1 | 12.7 | 113.4 | 9.70 |
+| ollama | llama3.2:3b | express_app | 2 | 62.7 | 123.8 | 6.73 |
+| ollama | llama3.2:3b | express_app | 3 | 72.3 | 119.6 | 9.49 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 1 | 135.0 | 59.3 | 0.13 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 2 | 108.4 | 64.6 | 0.11 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 3 | 4514.8 | 89.7 | 4.51 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 1 | 1942.3 | 89.1 | 1.94 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 2 | 1364.4 | 90.9 | 1.36 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 3 | 865.4 | 91.3 | 0.87 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 1 | 750.9 | 83.9 | 0.75 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 2 | 647.1 | 89.6 | 0.65 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 3 | 624.5 | 86.5 | 0.62 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 1 | 29295.8 | 65.2 | 29.30 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 2 | 17393.6 | 73.3 | 17.39 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 3 | 14610.4 | 75.1 | 14.61 |
 
 ---
 
-*Generated by llm-bench v0.1.0 | 24 runs across 2 backend/model configs*
+*Generated by llm-bench v0.1.0 | 36 runs across 3 backend/model configs*
