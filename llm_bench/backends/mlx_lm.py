@@ -5,7 +5,8 @@ from __future__ import annotations
 import gc
 import platform
 import time
-from typing import TYPE_CHECKING, Iterator
+from collections.abc import Iterator
+from typing import TYPE_CHECKING
 
 from llm_bench.backends.base import BackendError
 from llm_bench.models import TimingMetrics

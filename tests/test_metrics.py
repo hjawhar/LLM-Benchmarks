@@ -42,7 +42,8 @@ class TestMetricsCollector:
         # Phase 2: generation
         mc.start_generation()
         mc.record_first_token()
-        mc.record_tokens(50)
+        for _ in range(50):
+            mc.record_token()
         mc.end_generation()
 
         metrics = mc.collect()
@@ -59,7 +60,8 @@ class TestMetricsCollector:
         mc.end_model_load()
         mc.start_generation()
         mc.record_first_token()
-        mc.record_tokens(10)
+        for _ in range(10):
+            mc.record_token()
         mc.end_generation()
 
         mc.reset()
@@ -71,7 +73,8 @@ class TestMetricsCollector:
         mc.end_model_load()
         mc.start_generation()
         mc.record_first_token()
-        mc.record_tokens(20)
+        for _ in range(20):
+            mc.record_token()
         mc.end_generation()
 
         metrics = mc.collect()

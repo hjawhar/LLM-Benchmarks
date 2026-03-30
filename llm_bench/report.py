@@ -173,7 +173,8 @@ class HTMLReporter:
   <title>LLM Benchmark Report</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <style>
-    body {{ font-family: system-ui, sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }}
+    body {{ font-family: system-ui, sans-serif; max-width: 1100px;
+           margin: 2rem auto; padding: 0 1rem; }}
     h1 {{ border-bottom: 2px solid #333; padding-bottom: .5rem; }}
   </style>
 </head>

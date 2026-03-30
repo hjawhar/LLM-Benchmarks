@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 from pydantic import ValidationError
 
 from llm_bench.models import (
-    BackendConfig,
     BenchmarkConfig,
     BenchmarkResult,
+    BenchmarkSettings,
     PromptConfig,
-    QualityMetrics,
     TimingMetrics,
 )
 
@@ -72,21 +71,22 @@ class TestBenchmarkResult:
 
     def test_without_quality(self, sample_timing: TimingMetrics) -> None:
         result = BenchmarkResult(
-            backend="mlx-lm",
-            model="mlx-community/Llama-3.2-3B-Instruct-4bit",
-            prompt="Hello",
-            output="Hi there!",
+            backend_name="mlx-lm",
+            model_id="mlx-community/Llama-3.2-3B-Instruct-4bit",
+            prompt_name="hello",
+            prompt_text="Hello",
+            output_text="Hi there!",
             timing=sample_timing,
             quality=None,
-            timestamp=datetime(2026, 3, 30, 12, 0, 0, tzinfo=timezone.utc),
+            timestamp=datetime(2026, 3, 30, 12, 0, 0, tzinfo=UTC),
             run_index=0,
-            config_hash="def456",
+            settings=BenchmarkSettings(),
         )
         assert result.quality is None
-        assert result.backend == "mlx-lm"
+        assert result.backend_name == "mlx-lm"
 
     def test_result_json_round_trip(self, sample_result: BenchmarkResult) -> None:
         json_str = sample_result.model_dump_json()
         restored = BenchmarkResult.model_validate_json(json_str)
-        assert restored.backend == sample_result.backend
+        assert restored.backend_name == sample_result.backend_name
         assert restored.timing == sample_result.timing

@@ -15,8 +15,8 @@ class TestResultsDB:
         tmp_db.save_result(sample_result)
         results = tmp_db.get_results()
         assert len(results) == 1
-        assert results[0].backend == sample_result.backend
-        assert results[0].model == sample_result.model
+        assert results[0].backend_name == sample_result.backend_name
+        assert results[0].model_id == sample_result.model_id
 
     def test_save_results_batch(
         self, tmp_db: ResultsDB, sample_result: BenchmarkResult
@@ -64,10 +64,6 @@ class TestResultsDB:
 
     def test_wal_mode(self, tmp_db: ResultsDB) -> None:
         """Verify WAL journal mode is enabled."""
-        import sqlite3
-
-        # Access the underlying connection to check pragma.
-        # ResultsDB should expose its connection or we query directly.
         conn = tmp_db._conn
         cursor = conn.execute("PRAGMA journal_mode")
         mode = cursor.fetchone()[0]

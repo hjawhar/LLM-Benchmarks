@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -9,6 +9,7 @@ from llm_bench.models import (
     BackendConfig,
     BenchmarkConfig,
     BenchmarkResult,
+    BenchmarkSettings,
     PromptConfig,
     QualityMetrics,
     TimingMetrics,
@@ -64,13 +65,14 @@ def sample_timing() -> TimingMetrics:
 def sample_result(sample_timing: TimingMetrics) -> BenchmarkResult:
     """Return a BenchmarkResult with realistic dummy data."""
     return BenchmarkResult(
-        backend="ollama",
-        model="llama3.2:3b",
-        prompt="What is the capital of France?",
-        output="The capital of France is Paris.",
+        backend_name="ollama",
+        model_id="llama3.2:3b",
+        prompt_name="general_knowledge",
+        prompt_text="What is the capital of France?",
+        output_text="The capital of France is Paris.",
         timing=sample_timing,
         quality=QualityMetrics(perplexity=8.2, task_accuracy=0.95),
-        timestamp=datetime(2026, 3, 30, 12, 0, 0, tzinfo=timezone.utc),
+        timestamp=datetime(2026, 3, 30, 12, 0, 0, tzinfo=UTC),
         run_index=0,
-        config_hash="abc123",
+        settings=BenchmarkSettings(),
     )

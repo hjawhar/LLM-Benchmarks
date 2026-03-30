@@ -1,30 +1,41 @@
 from __future__ import annotations
 
-from llm_bench.models import BenchmarkConfig, PromptConfig
+from pathlib import Path
+
+from llm_bench.models import BenchmarkConfig
 from llm_bench.runner import BenchmarkRunner
+from llm_bench.storage import ResultsDB
 
 
 class TestBenchmarkRunner:
-    """Minimal runner tests — avoids actual backend invocations."""
+    """Minimal runner tests -- avoids actual backend invocations."""
 
-    def test_load_builtin_prompts(self, sample_config: BenchmarkConfig) -> None:
-        runner = BenchmarkRunner(sample_config)
-        prompts = runner._load_prompts()
-        assert isinstance(prompts, list)
-        assert len(prompts) > 0
-        # Each prompt should be a string
-        for p in prompts:
-            assert isinstance(p, str)
-            assert len(p) > 0
+    def test_load_builtin_prompts(
+        self, sample_config: BenchmarkConfig, tmp_path: Path
+    ) -> None:
+        db = ResultsDB(tmp_path / "runner_test.db")
+        try:
+            runner = BenchmarkRunner(sample_config, db)
+            prompts = runner._load_prompts()
+            assert isinstance(prompts, list)
+            assert len(prompts) > 0
+            # Each prompt is a (name, text) tuple
+            for name, text in prompts:
+                assert isinstance(name, str)
+                assert isinstance(text, str)
+                assert len(text) > 0
+        finally:
+            db.close()
 
     def test_skips_unavailable_backends(
-        self, sample_config: BenchmarkConfig
+        self, sample_config: BenchmarkConfig, tmp_path: Path
     ) -> None:
         """Runner should skip backends that report is_available() == False."""
-        runner = BenchmarkRunner(sample_config)
-        # Run the benchmark — unavailable backends should be skipped, not crash.
-        # With all backends likely unavailable in test env, results should be empty.
-        results = runner.run()
-        assert isinstance(results, list)
-        # We don't assert len(results) == 0 because the test env might
-        # have ollama installed. We just verify it doesn't raise.
+        db = ResultsDB(tmp_path / "runner_skip_test.db")
+        try:
+            runner = BenchmarkRunner(sample_config, db)
+            # Run the benchmark -- unavailable backends should be skipped, not crash.
+            results = runner.run()
+            assert isinstance(results, list)
+        finally:
+            db.close()

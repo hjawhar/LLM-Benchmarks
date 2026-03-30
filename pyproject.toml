@@ -16,7 +16,7 @@ dependencies = [
 mlx = ["mlx-lm>=0.19"]
 ollama = ["ollama>=0.4"]
 llamacpp = ["llama-cpp-python>=0.3"]
-vllm = ["vllm-metal>=0.1"]
+vllm = ["vllm-metal>=0.1; python_version>='3.12'"]
 all = ["llm-bench[mlx,ollama,llamacpp]"]
 dev = [
     "pytest>=8.0",

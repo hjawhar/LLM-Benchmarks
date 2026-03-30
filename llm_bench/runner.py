@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 from rich.console import Console
@@ -64,9 +64,12 @@ _BUILTIN_PROMPTS: dict[str, str] = {
         "was a period during which predominantly agrarian, rural societies in Europe "
         "and America became industrial and urban."
     ),
-    "code_generation": "Write a Python function that computes the Fibonacci sequence up to n terms.",
+    "code_generation": (
+        "Write a Python function that computes the Fibonacci sequence up to n terms."
+    ),
     "creative_writing": (
-        "Write a short story (about 200 words) about a robot discovering emotions for the first time."
+        "Write a short story (about 200 words) about a robot"
+        " discovering emotions for the first time."
     ),
     "reasoning": (
         "If all roses are flowers and some flowers fade quickly, "
@@ -284,7 +287,7 @@ class BenchmarkRunner:
                             timing=timing,
                             quality=None,  # placeholder for quality evaluation
                             run_index=run_idx,
-                            timestamp=datetime.now(timezone.utc),
+                            timestamp=datetime.now(UTC),
                             settings=settings,
                         )
                         results.append(result)

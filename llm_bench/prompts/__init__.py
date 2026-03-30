@@ -45,7 +45,10 @@ def load_builtin_prompts(name: str) -> list[tuple[str, str]]:
         data = yaml.safe_load(f)
 
     if not isinstance(data, dict):
-        raise ValueError(f"Expected top-level mapping in {_DEFAULT_FILE}, got {type(data).__name__}")
+        raise ValueError(
+            f"Expected top-level mapping in {_DEFAULT_FILE},"
+            f" got {type(data).__name__}"
+        )
 
     if name not in data:
         available = ", ".join(sorted(data.keys()))
