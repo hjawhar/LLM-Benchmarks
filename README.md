@@ -46,29 +46,29 @@ Each backend is tested against two prompt categories (3 runs per prompt, 1 warmu
 
 | Backend | Model | Runs | TTFT (ms) | TPS (tok/s) | Load (s) | Memory (MB) | Total (s) |
 | ------- | ----- | ---: | --------: | ----------: | -------: | ----------: | --------: |
-| mlx-lm | Llama-3.2-3B-Instruct-4bit | 12 | 5721.1 +/- 5452.9 | 176.4 +/- 15.1 | 1.1 +/- 0.0 | 2114.5 +/- 1.1 | 5.7 +/- 5.5 |
-| ollama | llama3.2:3b | 12 | 47.6 +/- 30.2 | 157.2 +/- 35.9 | 1.3 +/- 0.0 | 2115.7 +/- 0.0 | 2.8 +/- 4.1 |
-| llama.cpp | Llama-3.2-3B-Instruct-Q4_K_M | 12 | 6699.3 +/- 10201.6 | 71.6 +/- 11.5 | 1.4 +/- 0.0 | 6256.3 +/- 16.3 | 6.7 +/- 10.2 |
+| mlx-lm | Llama-3.2-3B-Instruct-4bit | 12 | 5612.9 +/- 5338.8 | 178.8 +/- 15.5 | 1.2 +/- 0.0 | 2115.6 +/- 0.9 | 5.6 +/- 5.3 |
+| ollama | llama3.2:3b | 12 | 47.7 +/- 26.7 | 167.7 +/- 20.4 | 1.3 +/- 0.0 | 2116.8 +/- 0.0 | 2.6 +/- 3.8 |
+| llama.cpp | Llama-3.2-3B-Instruct-Q4_K_M | 12 | 5909.0 +/- 8974.2 | 80.8 +/- 8.0 | 8.0 +/- 0.0 | 6262.2 +/- 16.2 | 5.9 +/- 9.0 |
 
 ### Express.js App Generation (long output)
 
 | Backend | Run 1 | Run 2 | Run 3 | Avg TPS |
 | ------- | ----: | ----: | ----: | ------: |
 | mlx-lm | 185.2 tok/s | 180.4 tok/s | 180.5 tok/s | **182.0** |
-| ollama | 98.0 tok/s | 103.9 tok/s | 97.3 tok/s | **99.7** |
-| llama.cpp | 59.4 tok/s | 66.8 tok/s | 70.3 tok/s | **65.5** |
+| ollama | 142.3 tok/s | 132.7 tok/s | 137.0 tok/s | **137.3** |
+| llama.cpp | 68.1 tok/s | 75.8 tok/s | 78.0 tok/s | **74.0** |
 
 ### Short QA (short output)
 
 | Backend | general_knowledge | math_reasoning | definition | Avg TPS |
 | ------- | ----------------: | -------------: | ---------: | ------: |
-| mlx-lm | 193.1 tok/s | 174.2 tok/s | 156.4 tok/s | **174.6** |
+| mlx-lm | 193.4 tok/s | 174.2 tok/s | 156.4 tok/s | **174.7** |
 | ollama | 191.1 tok/s | 168.2 tok/s | 169.6 tok/s | **176.3** |
-| llama.cpp | 71.8 tok/s | 74.0 tok/s | 75.0 tok/s | **73.6** |
+| llama.cpp | 75.3 tok/s | 87.6 tok/s | 86.3 tok/s | **83.1** |
 
 ### Key Observations
 
-- **mlx-lm** delivers the highest sustained throughput on long outputs (187 tok/s on Express.js generation), benefiting from native Metal acceleration.
+- **mlx-lm** delivers the highest sustained throughput on long outputs (182 tok/s on Express.js generation), benefiting from native Metal acceleration.
 - **ollama** has the best time-to-first-token (47ms vs 5.6s for mlx-lm) because it keeps models hot in its server process, making it ideal for interactive/chat use cases.
 - **llama.cpp** via Python bindings runs at roughly half the speed of the other two. The Python wrapper overhead is documented upstream. Direct `llama.cpp` CLI would be faster.
 - All three backends use comparable memory (~2.1 GB) except llama.cpp's Python bindings which report higher process RSS (~6.3 GB) due to the embedded C++ runtime.
@@ -130,6 +130,7 @@ settings:
 Each run produces:
 - **CLI table** in the terminal (via Rich)
 - **`RESULTS.md`** in the project root -- GitHub-formatted markdown tables
+- **`benchmarks/<backend>/`** -- full generated outputs per prompt ([browse outputs](benchmarks/))
 
 ## Metrics
 
@@ -151,13 +152,17 @@ llm_bench/              # Main package
   cli.py                # Click CLI (llm-bench command)
   runner.py             # Benchmark orchestration
   metrics.py            # Timing and memory measurement
-  report.py             # Rich CLI + Markdown reporters
+  report.py             # Rich CLI, Markdown, and output writers
   storage.py            # SQLite persistence (optional)
   models.py             # Pydantic data models
   config.py             # YAML config loader
 configs/                # User benchmark configurations
 tests/                  # pytest test suite
 models/                 # GGUF model files (gitignored)
+benchmarks/             # Generated outputs per backend/prompt
+  mlx-lm/              #   e.g. express_app.md, general_knowledge.md
+  ollama/
+  llama-cpp/
 ```
 
 ## License
