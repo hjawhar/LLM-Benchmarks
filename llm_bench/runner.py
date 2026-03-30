@@ -31,7 +31,7 @@ class BenchmarkRunner:
     cool-down pauses, and persistence to the results database.
     """
 
-    def __init__(self, config: BenchmarkConfig, db: ResultsDB) -> None:
+    def __init__(self, config: BenchmarkConfig, db: ResultsDB | None = None) -> None:
         self._config = config
         self._db = db
 
@@ -214,7 +214,8 @@ class BenchmarkRunner:
                             settings=settings,
                         )
                         results.append(result)
-                        self._db.save_result(result)
+                        if self._db is not None:
+                            self._db.save_result(result)
 
                         # Cool-down between runs.
                         if settings.cool_down_seconds > 0:

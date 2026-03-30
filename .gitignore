@@ -21,9 +21,6 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Benchmark artifacts
-benchmarks/results.db
-benchmarks/results.db-*
 
 # uv
 uv.lock

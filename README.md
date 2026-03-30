@@ -46,25 +46,25 @@ Each backend is tested against two prompt categories (3 runs per prompt, 1 warmu
 
 | Backend | Model | Runs | TTFT (ms) | TPS (tok/s) | Load (s) | Memory (MB) | Total (s) |
 | ------- | ----- | ---: | --------: | ----------: | -------: | ----------: | --------: |
-| mlx-lm | Llama-3.2-3B-Instruct-4bit | 12 | 5647.6 ± 5372.4 | 177.6 ± 15.3 | 1.1 ± 0.0 | 2116.5 ± 1.8 | 5.6 ± 5.4 |
-| ollama | llama3.2:3b | 12 | 46.7 ± 25.7 | 162.2 ± 27.6 | 2.2 ± 0.0 | 2117.6 ± 0.0 | 2.6 ± 3.7 |
-| llama.cpp | Llama-3.2-3B-Instruct-Q4_K_M | 12 | 6021.0 ± 9377.8 | 79.9 ± 11.8 | 1.3 ± 0.0 | 6258.5 ± 16.4 | 6.0 ± 9.4 |
+| mlx-lm | Llama-3.2-3B-Instruct-4bit | 12 | 5721.1 +/- 5452.9 | 176.4 +/- 15.1 | 1.1 +/- 0.0 | 2114.5 +/- 1.1 | 5.7 +/- 5.5 |
+| ollama | llama3.2:3b | 12 | 47.6 +/- 30.2 | 157.2 +/- 35.9 | 1.3 +/- 0.0 | 2115.7 +/- 0.0 | 2.8 +/- 4.1 |
+| llama.cpp | Llama-3.2-3B-Instruct-Q4_K_M | 12 | 6699.3 +/- 10201.6 | 71.6 +/- 11.5 | 1.4 +/- 0.0 | 6256.3 +/- 16.3 | 6.7 +/- 10.2 |
 
 ### Express.js App Generation (long output)
 
 | Backend | Run 1 | Run 2 | Run 3 | Avg TPS |
 | ------- | ----: | ----: | ----: | ------: |
-| mlx-lm | 188.5 tok/s | 184.8 tok/s | 187.0 tok/s | **186.8** |
-| ollama | 113.4 tok/s | 123.8 tok/s | 119.6 tok/s | **118.9** |
-| llama.cpp | 65.2 tok/s | 73.3 tok/s | 75.1 tok/s | **71.2** |
+| mlx-lm | 185.2 tok/s | 180.4 tok/s | 180.5 tok/s | **182.0** |
+| ollama | 98.0 tok/s | 103.9 tok/s | 97.3 tok/s | **99.7** |
+| llama.cpp | 59.4 tok/s | 66.8 tok/s | 70.3 tok/s | **65.5** |
 
 ### Short QA (short output)
 
 | Backend | general_knowledge | math_reasoning | definition | Avg TPS |
 | ------- | ----------------: | -------------: | ---------: | ------: |
-| mlx-lm | 193.2 tok/s | 173.6 tok/s | 156.9 tok/s | **174.6** |
-| ollama | 190.4 tok/s | 168.6 tok/s | 170.6 tok/s | **176.5** |
-| llama.cpp | 71.2 tok/s | 90.4 tok/s | 86.7 tok/s | **82.8** |
+| mlx-lm | 193.1 tok/s | 174.2 tok/s | 156.4 tok/s | **174.6** |
+| ollama | 191.1 tok/s | 168.2 tok/s | 169.6 tok/s | **176.3** |
+| llama.cpp | 71.8 tok/s | 74.0 tok/s | 75.0 tok/s | **73.6** |
 
 ### Key Observations
 
@@ -84,11 +84,8 @@ pip install --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/met
 # Check available backends
 uv run llm-bench backends
 
-# Run benchmarks
+# Run benchmarks (outputs RESULTS.md)
 uv run llm-bench run
-
-# Generate reports from existing data
-uv run llm-bench report
 ```
 
 ### Configuration
@@ -132,8 +129,7 @@ settings:
 
 Each run produces:
 - **CLI table** in the terminal (via Rich)
-- **`benchmarks/reports/RESULTS.md`** -- GitHub-formatted markdown tables
-- **`benchmarks/reports/index.html`** -- interactive Plotly charts
+- **`RESULTS.md`** in the project root -- GitHub-formatted markdown tables
 
 ## Metrics
 
@@ -155,14 +151,13 @@ llm_bench/              # Main package
   cli.py                # Click CLI (llm-bench command)
   runner.py             # Benchmark orchestration
   metrics.py            # Timing and memory measurement
-  storage.py            # SQLite persistence
-  report.py             # Rich, Plotly, and Markdown reporters
+  report.py             # Rich CLI + Markdown reporters
+  storage.py            # SQLite persistence (optional)
   models.py             # Pydantic data models
   config.py             # YAML config loader
 configs/                # User benchmark configurations
 tests/                  # pytest test suite
 models/                 # GGUF model files (gitignored)
-benchmarks/reports/     # Generated reports
 ```
 
 ## License

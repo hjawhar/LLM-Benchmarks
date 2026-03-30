@@ -17,7 +17,7 @@ CLI (Click) -> Config (YAML/Pydantic) -> BenchmarkRunner -> Backend (Protocol)
                                               |
                                      ResultsDB (SQLite WAL)
                                               |
-                                    Reporter (Rich CLI / Plotly HTML)
+                                    Reporter (Rich CLI / Markdown)
 ```
 
 ### Key Flow
@@ -30,7 +30,7 @@ CLI (Click) -> Config (YAML/Pydantic) -> BenchmarkRunner -> Backend (Protocol)
    - Runs timed iterations via `run_single()`
    - Persists each `BenchmarkResult` to SQLite
    - Sleeps `cool_down_seconds` between runs
-4. Results are displayed as Rich CLI tables and/or Plotly static HTML
+4. Results are displayed as Rich CLI tables and written to `RESULTS.md`
 
 ### Backend Plugin System
 
@@ -49,7 +49,7 @@ configs/                # User-facing YAML benchmark configs
 tests/                  # pytest test suite
   test_backends/        # Backend registry tests
 docs/specs/             # Design specifications
-benchmarks/             # Runtime output (SQLite DB, HTML reports) -- gitignored
+models/                 # GGUF model files (gitignored)
 ```
 
 ## Setup & Development Commands
@@ -135,10 +135,8 @@ uv run llm-bench run --quality
 uv run llm-bench run --output-dir ./my-results
 
 # Generate reports from existing results
-uv run llm-bench report --db benchmarks/reports/results.db
-uv run llm-bench report --format cli     # CLI table only
-uv run llm-bench report --format html    # HTML only
-uv run llm-bench report --format both    # Both (default)
+# Run benchmarks (outputs RESULTS.md to project root)
+uv run llm-bench run
 ```
 
 ### CLI Commands Reference
@@ -229,7 +227,7 @@ config = BenchmarkConfig.model_validate(data)
 | `llm_bench/backends/__init__.py` | Backend registry (dict mapping name -> class) |
 | `llm_bench/metrics.py` | `Timer`, `MetricsCollector`, `measure_memory()` |
 | `llm_bench/storage.py` | `ResultsDB` -- SQLite with WAL mode, context manager |
-| `llm_bench/report.py` | `CLIReporter` (Rich tables), `HTMLReporter` (Plotly charts) |
+| `llm_bench/report.py` | `CLIReporter` (Rich tables), `MarkdownReporter` (GitHub markdown) |
 | `llm_bench/config.py` | `load_config()` -- YAML to `BenchmarkConfig` |
 | `llm_bench/prompts/default.yaml` | Built-in prompt sets (4 categories, 11 prompts) |
 | `configs/benchmark.yaml` | Default user-facing benchmark configuration |

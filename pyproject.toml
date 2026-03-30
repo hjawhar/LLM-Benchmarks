@@ -8,7 +8,6 @@ dependencies = [
     "pydantic>=2.0",
     "pyyaml>=6.0",
     "rich>=13.0",
-    "plotly>=5.18",
     "psutil>=5.9",
 ]
 

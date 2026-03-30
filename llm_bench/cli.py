@@ -1,8 +1,8 @@
 """Click CLI entry point for llm-bench.
 
 Commands:
-    run       -- Run benchmarks from a config file.
-    report    -- Generate reports from stored results.
+    run       -- Run benchmarks, output RESULTS.md.
+    report    -- Regenerate RESULTS.md from existing SQLite data.
     backends  -- List available backends and installation status.
 """
 
@@ -18,6 +18,8 @@ if TYPE_CHECKING:
     from llm_bench.models import BenchmarkConfig
 
 console = Console()
+
+RESULTS_PATH = Path("RESULTS.md")
 
 
 # ---------------------------------------------------------------------------
@@ -68,111 +70,40 @@ def cli() -> None:
     help="Enable quality evaluation (perplexity, task accuracy).",
 )
 @click.option(
-    "--output-dir",
+    "--output",
+    "output_path",
     type=click.Path(path_type=Path),
-    default=Path("benchmarks/reports"),
+    default=RESULTS_PATH,
     show_default=True,
-    help="Directory for HTML report output.",
+    help="Path for the Markdown results file.",
 )
-def run(config_path: Path, quality: bool, output_dir: Path) -> None:
-    """Run benchmarks from a configuration file."""
-    from llm_bench.report import CLIReporter, HTMLReporter, MarkdownReporter
+def run(config_path: Path, quality: bool, output_path: Path) -> None:
+    """Run benchmarks and write RESULTS.md."""
+    from llm_bench.report import CLIReporter, MarkdownReporter
     from llm_bench.runner import BenchmarkRunner
-    from llm_bench.storage import ResultsDB
 
     config = _load_config(config_path)
 
     console.print("\n[bold]LLM Benchmark Runner[/]")
     console.print(f"  Config : {config_path}")
     console.print(f"  Quality: {'enabled' if quality else 'disabled'}")
-    console.print(f"  Output : {output_dir}\n")
+    console.print(f"  Output : {output_path}\n")
 
-    db_path = output_dir / "results.db"
-    db_path.parent.mkdir(parents=True, exist_ok=True)
+    runner = BenchmarkRunner(config)
 
-    with ResultsDB(db_path) as db:
-        runner = BenchmarkRunner(config, db)
-
-        try:
-            results = runner.run(quality=quality)
-        except KeyboardInterrupt:
-            console.print("\n[yellow]Benchmark interrupted by user.[/]")
-            raise SystemExit(130) from None
+    try:
+        results = runner.run(quality=quality)
+    except KeyboardInterrupt:
+        console.print("\n[yellow]Benchmark interrupted by user.[/]")
+        raise SystemExit(130) from None
 
     if not results:
         console.print("[yellow]No results collected.[/]")
         return
 
     CLIReporter.print_summary(results)
-
-    output_dir.mkdir(parents=True, exist_ok=True)
-    HTMLReporter.generate(results, output_dir)
-    md_path = output_dir / "RESULTS.md"
-    MarkdownReporter.generate(results, md_path)
-    console.print(f"\n[dim]HTML report: {output_dir}/index.html[/]")
-    console.print(f"[dim]Markdown report: {md_path}[/]")
-
-
-# ---------------------------------------------------------------------------
-# report
-# ---------------------------------------------------------------------------
-
-
-@cli.command()
-@click.option(
-    "--db",
-    "db_path",
-    type=click.Path(exists=False, path_type=Path),
-    default=Path("benchmarks/reports/results.db"),
-    show_default=True,
-    help="Path to the SQLite results database.",
-)
-@click.option(
-    "--output-dir",
-    type=click.Path(path_type=Path),
-    default=Path("benchmarks/reports"),
-    show_default=True,
-    help="Directory for report output.",
-)
-@click.option(
-    "--format",
-    "fmt",
-    type=click.Choice(["cli", "html", "both"], case_sensitive=False),
-    default="both",
-    show_default=True,
-    help="Report output format.",
-)
-def report(db_path: Path, output_dir: Path, fmt: str) -> None:
-    """Generate reports from existing benchmark results."""
-    from llm_bench.report import CLIReporter, HTMLReporter, MarkdownReporter
-    from llm_bench.storage import ResultsDB
-
-    if not db_path.exists():
-        console.print(f"[bold red]Error:[/] Database not found: {db_path}")
-        console.print("[dim]Run benchmarks first with: llm-bench run[/]")
-        raise SystemExit(1)
-
-    with ResultsDB(db_path) as db:
-        results = db.get_results()
-
-    if not results:
-        console.print("[yellow]No results found in database.[/]")
-        return
-
-    console.print(
-        f"[bold]Generating report[/] ({fmt}) from {len(results)} results..."
-    )
-
-    if fmt in ("cli", "both"):
-        CLIReporter.print_summary(results)
-
-    if fmt in ("html", "both"):
-        output_dir.mkdir(parents=True, exist_ok=True)
-        HTMLReporter.generate(results, output_dir)
-        md_path = output_dir / "RESULTS.md"
-        MarkdownReporter.generate(results, md_path)
-        console.print(f"[green]HTML report:[/] {output_dir}/index.html")
-        console.print(f"[green]Markdown report:[/] {md_path}")
+    MarkdownReporter.generate(results, output_path)
+    console.print(f"\n[green]Results written to {output_path}[/]")
 
 
 # ---------------------------------------------------------------------------
