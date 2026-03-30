@@ -163,6 +163,65 @@ class MarkdownReporter:
 
 
 # ---------------------------------------------------------------------------
+# Output writer -- saves generated text per backend/prompt
+# ---------------------------------------------------------------------------
+
+
+class OutputWriter:
+    """Writes generated LLM outputs to benchmarks/<backend>/<prompt>.md."""
+
+    @staticmethod
+    def write(results: list[BenchmarkResult], output_dir: Path) -> None:
+        """Save each prompt's best run (last) output as a markdown file.
+
+        Structure::
+
+            benchmarks/
+              mlx-lm/
+                general_knowledge.md
+                express_app.md
+              ollama/
+                general_knowledge.md
+                ...
+
+        Each file contains the prompt, timing metadata, and the full
+        generated output. When multiple runs exist for the same
+        backend/prompt, all runs are included.
+        """
+        # Group by (backend, prompt)
+        groups: dict[tuple[str, str], list[BenchmarkResult]] = defaultdict(list)
+        for r in results:
+            groups[(r.backend_name, r.prompt_name)].append(r)
+
+        for (backend, prompt_name), runs in sorted(groups.items()):
+            backend_dir = output_dir / backend
+            backend_dir.mkdir(parents=True, exist_ok=True)
+
+            lines: list[str] = []
+            lines.append(f"# {prompt_name}\n")
+            lines.append(f"**Backend:** {backend}  ")
+            lines.append(f"**Model:** {runs[0].model_id}  ")
+            lines.append(f"**Max Tokens:** {runs[0].settings.max_tokens}\n")
+
+            for r in runs:
+                t = r.timing
+                lines.append(f"## Run {r.run_index + 1}\n")
+                lines.append("| Metric | Value |")
+                lines.append("| ------ | ----: |")
+                lines.append(f"| TPS | {t.tps:.1f} tok/s |")
+                lines.append(f"| TTFT | {t.ttft_ms:.1f} ms |")
+                lines.append(f"| Total | {t.total_duration_s:.2f} s |")
+                lines.append(f"| Memory | {t.peak_memory_mb:.0f} MB |\n")
+                lines.append("### Prompt\n")
+                lines.append(f"```\n{r.prompt_text}\n```\n")
+                lines.append("### Output\n")
+                lines.append(f"```\n{r.output_text}\n```\n")
+
+            file_path = backend_dir / f"{prompt_name}.md"
+            file_path.write_text("\n".join(lines), encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 

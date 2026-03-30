@@ -4,50 +4,50 @@
 
 | Backend | Model | Runs | TTFT (ms) | TPS (tok/s) | Load (s) | Memory (MB) | Total (s) |
 | ------- | ----- | ---: | --------: | ----------: | -------: | ----------: | --------: |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | 12 | 6699.3 +/- 10201.6 | 71.6 +/- 11.5 | 1.4 +/- 0.0 | 6256.3 +/- 16.3 | 6.7 +/- 10.2 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | 12 | 5721.1 +/- 5452.9 | 176.4 +/- 15.1 | 1.1 +/- 0.0 | 2114.5 +/- 1.1 | 5.7 +/- 5.5 |
-| ollama | llama3.2:3b | 12 | 47.6 +/- 30.2 | 157.2 +/- 35.9 | 1.3 +/- 0.0 | 2115.7 +/- 0.0 | 2.8 +/- 4.1 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | 12 | 5909.0 +/- 8974.2 | 80.8 +/- 8.0 | 8.0 +/- 0.0 | 6262.2 +/- 16.2 | 5.9 +/- 9.0 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | 12 | 5612.9 +/- 5338.8 | 178.8 +/- 15.5 | 1.2 +/- 0.0 | 2115.6 +/- 0.9 | 5.6 +/- 5.3 |
+| ollama | llama3.2:3b | 12 | 47.7 +/- 26.7 | 167.7 +/- 20.4 | 1.3 +/- 0.0 | 2116.8 +/- 0.0 | 2.6 +/- 3.8 |
 
 ### Per-Prompt Breakdown
 
 | Backend | Model | Prompt | Run | TTFT (ms) | TPS (tok/s) | Total (s) |
 | ------- | ----- | ------ | --: | --------: | ----------: | --------: |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 1 | 10569.9 | 193.9 | 10.57 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 2 | 10640.1 | 192.6 | 10.64 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 3 | 10633.3 | 192.7 | 10.63 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 1 | 587.7 | 182.1 | 0.59 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 2 | 632.4 | 169.2 | 0.63 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 3 | 624.1 | 171.4 | 0.62 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 1 | 365.4 | 169.7 | 0.37 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 2 | 415.9 | 149.1 | 0.42 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 3 | 412.4 | 150.3 | 0.41 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 1 | 11065.1 | 185.2 | 11.07 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 2 | 11357.4 | 180.4 | 11.36 |
-| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 3 | 11349.1 | 180.5 | 11.35 |
-| ollama | llama3.2:3b | general_knowledge | 1 | 6.0 | 189.6 | 0.12 |
-| ollama | llama3.2:3b | general_knowledge | 2 | 70.7 | 192.0 | 0.21 |
-| ollama | llama3.2:3b | general_knowledge | 3 | 70.7 | 191.7 | 0.21 |
-| ollama | llama3.2:3b | math_reasoning | 1 | 6.4 | 168.7 | 0.75 |
-| ollama | llama3.2:3b | math_reasoning | 2 | 71.6 | 168.8 | 0.87 |
-| ollama | llama3.2:3b | math_reasoning | 3 | 64.5 | 167.2 | 1.07 |
-| ollama | llama3.2:3b | definition | 1 | 6.0 | 169.5 | 0.50 |
-| ollama | llama3.2:3b | definition | 2 | 69.5 | 169.9 | 0.52 |
-| ollama | llama3.2:3b | definition | 3 | 67.2 | 169.3 | 0.59 |
-| ollama | llama3.2:3b | express_app | 1 | 9.3 | 98.0 | 10.29 |
-| ollama | llama3.2:3b | express_app | 2 | 65.8 | 103.9 | 8.93 |
-| ollama | llama3.2:3b | express_app | 3 | 64.1 | 97.3 | 9.52 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 1 | 102.8 | 77.8 | 0.10 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 2 | 113.4 | 61.7 | 0.11 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 3 | 5337.8 | 75.9 | 5.34 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 1 | 3127.1 | 55.3 | 3.13 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 2 | 1520.2 | 81.6 | 1.52 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 3 | 929.0 | 85.0 | 0.93 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 1 | 1126.1 | 55.9 | 1.13 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 2 | 674.7 | 86.0 | 0.67 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 3 | 649.6 | 83.1 | 0.65 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 1 | 32129.2 | 59.4 | 32.13 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 2 | 19081.4 | 66.8 | 19.08 |
-| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 3 | 15599.8 | 70.3 | 15.60 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 1 | 10558.8 | 194.1 | 10.56 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 2 | 10618.6 | 193.0 | 10.62 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | general_knowledge | 3 | 10618.9 | 193.0 | 10.62 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 1 | 582.6 | 183.7 | 0.58 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 2 | 629.7 | 169.9 | 0.63 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | math_reasoning | 3 | 624.2 | 171.4 | 0.62 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 1 | 364.0 | 170.3 | 0.36 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 2 | 417.1 | 148.7 | 0.42 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | definition | 3 | 399.5 | 155.2 | 0.40 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 1 | 10766.8 | 190.3 | 10.77 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 2 | 10864.5 | 188.6 | 10.86 |
+| mlx-lm | mlx-community/Llama-3.2-3B-Instruct-4bit | express_app | 3 | 10910.5 | 187.8 | 10.91 |
+| ollama | llama3.2:3b | general_knowledge | 1 | 11.5 | 193.4 | 0.12 |
+| ollama | llama3.2:3b | general_knowledge | 2 | 65.3 | 191.1 | 0.20 |
+| ollama | llama3.2:3b | general_knowledge | 3 | 65.9 | 189.7 | 0.20 |
+| ollama | llama3.2:3b | math_reasoning | 1 | 11.1 | 170.7 | 0.80 |
+| ollama | llama3.2:3b | math_reasoning | 2 | 64.5 | 170.4 | 0.96 |
+| ollama | llama3.2:3b | math_reasoning | 3 | 64.5 | 170.4 | 0.97 |
+| ollama | llama3.2:3b | definition | 1 | 11.5 | 172.0 | 0.52 |
+| ollama | llama3.2:3b | definition | 2 | 67.5 | 171.3 | 0.61 |
+| ollama | llama3.2:3b | definition | 3 | 65.7 | 171.2 | 0.58 |
+| ollama | llama3.2:3b | express_app | 1 | 12.4 | 142.3 | 9.05 |
+| ollama | llama3.2:3b | express_app | 2 | 68.3 | 132.7 | 10.95 |
+| ollama | llama3.2:3b | express_app | 3 | 64.6 | 137.0 | 5.79 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 1 | 98.0 | 81.6 | 0.10 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 2 | 101.4 | 69.0 | 0.10 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | general_knowledge | 3 | 5369.4 | 75.4 | 5.37 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 1 | 2137.0 | 81.0 | 2.14 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 2 | 1360.1 | 91.2 | 1.36 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | math_reasoning | 3 | 872.5 | 90.5 | 0.87 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 1 | 781.7 | 80.6 | 0.78 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 2 | 651.7 | 89.0 | 0.65 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | definition | 3 | 604.8 | 89.3 | 0.60 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 1 | 28051.4 | 68.1 | 28.05 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 2 | 16818.5 | 75.8 | 16.82 |
+| llama-cpp | models/Llama-3.2-3B-Instruct-Q4_K_M.gguf | express_app | 3 | 14061.7 | 78.0 | 14.06 |
 
 ---
 

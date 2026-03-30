@@ -79,7 +79,7 @@ def cli() -> None:
 )
 def run(config_path: Path, quality: bool, output_path: Path) -> None:
     """Run benchmarks and write RESULTS.md."""
-    from llm_bench.report import CLIReporter, MarkdownReporter
+    from llm_bench.report import CLIReporter, MarkdownReporter, OutputWriter
     from llm_bench.runner import BenchmarkRunner
 
     config = _load_config(config_path)
@@ -103,7 +103,9 @@ def run(config_path: Path, quality: bool, output_path: Path) -> None:
 
     CLIReporter.print_summary(results)
     MarkdownReporter.generate(results, output_path)
+    OutputWriter.write(results, Path("benchmarks"))
     console.print(f"\n[green]Results written to {output_path}[/]")
+    console.print("[green]Outputs saved to benchmarks/[/]")
 
 
 # ---------------------------------------------------------------------------
