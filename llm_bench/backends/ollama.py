@@ -178,3 +178,17 @@ class OllamaBackend:
             # Best-effort; server may already be down.
             pass
         self._model_id = None
+
+
+    def list_models(self) -> list[str]:
+        """Return model tags available on the local Ollama server."""
+        try:
+            import json
+            import urllib.request
+
+            req = urllib.request.Request(f"{self._host}/api/tags", method="GET")
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                data = json.loads(resp.read())
+            return [m["name"] for m in data.get("models", [])]
+        except Exception:
+            return []

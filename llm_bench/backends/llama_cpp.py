@@ -130,3 +130,18 @@ class LlamaCppBackend:
         self._model = None
         self._model_id = None
         gc.collect()
+
+
+    @staticmethod
+    def list_models(search_dirs: list[str] | None = None) -> list[str]:
+        """Return .gguf files found in common locations."""
+        from pathlib import Path
+
+        dirs = [Path(d) for d in (search_dirs or ["models", "."])]
+        models: list[str] = []
+        for d in dirs:
+            if not d.is_dir():
+                continue
+            for f in sorted(d.rglob("*.gguf")):
+                models.append(str(f))
+        return models

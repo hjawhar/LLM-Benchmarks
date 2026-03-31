@@ -144,3 +144,25 @@ class VLLMBackend:
         self._engine = None
         self._model_id = None
         gc.collect()
+
+
+    @staticmethod
+    def list_models() -> list[str]:
+        """Return locally cached HuggingFace models usable with vLLM.
+
+        vLLM uses the standard HF cache, so we list all cached model repos.
+        """
+        from pathlib import Path
+
+        cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+        if not cache_dir.is_dir():
+            return []
+        models: list[str] = []
+        for entry in sorted(cache_dir.iterdir()):
+            name = entry.name
+            if entry.is_dir() and name.startswith("models--"):
+                # Exclude mlx-community models (those are MLX-specific)
+                repo_id = name.removeprefix("models--").replace("--", "/")
+                if not repo_id.startswith("mlx-community/"):
+                    models.append(repo_id)
+        return models

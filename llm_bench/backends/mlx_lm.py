@@ -6,6 +6,7 @@ import gc
 import platform
 import time
 from collections.abc import Iterator
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from llm_bench.backends.base import BackendError
@@ -147,3 +148,19 @@ class MLXLMBackend:
         self._tokenizer = None
         self._model_id = None
         gc.collect()
+
+
+    @staticmethod
+    def list_models() -> list[str]:
+        """Return MLX models cached locally in the HuggingFace hub."""
+        cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+        if not cache_dir.is_dir():
+            return []
+        models: list[str] = []
+        for entry in sorted(cache_dir.iterdir()):
+            name = entry.name
+            # HF cache dirs are named models--<org>--<repo>
+            if entry.is_dir() and name.startswith("models--mlx-community--"):
+                # Convert models--mlx-community--Foo to mlx-community/Foo
+                models.append(name.removeprefix("models--").replace("--", "/"))
+        return models

@@ -2,8 +2,8 @@
 
 Commands:
     run       -- Run benchmarks, output RESULTS.md.
-    report    -- Regenerate RESULTS.md from existing SQLite data.
     backends  -- List available backends and installation status.
+    models    -- List locally available models per backend.
 """
 
 from __future__ import annotations
@@ -131,3 +131,58 @@ def backends() -> None:
         table.add_row(name, status)
 
     console.print(table)
+
+
+
+# ---------------------------------------------------------------------------
+# models
+# ---------------------------------------------------------------------------
+
+
+@cli.command()
+@click.option(
+    "--backend",
+    "backend_name",
+    type=str,
+    default=None,
+    help="Show models for a specific backend only.",
+)
+def models(backend_name: str | None) -> None:
+    """List locally available models for each backend."""
+    from rich.table import Table
+
+    from llm_bench.backends import get_backend, list_backends
+
+    names = [backend_name] if backend_name else list_backends()
+
+    table = Table(title="Local Models", show_lines=True)
+    table.add_column("Backend", style="cyan", no_wrap=True)
+    table.add_column("Model", style="green")
+
+    found = 0
+    for name in names:
+        try:
+            backend = get_backend(name)
+        except KeyError:
+            console.print(f"[red]Unknown backend: {name}[/]")
+            continue
+
+        if not backend.is_available():
+            table.add_row(name, "[dim]not installed[/]")
+            continue
+
+        if not hasattr(backend, "list_models"):
+            table.add_row(name, "[dim]model listing not supported[/]")
+            continue
+
+        model_list = backend.list_models()
+        if not model_list:
+            table.add_row(name, "[dim]no models found[/]")
+            continue
+
+        for model_id in model_list:
+            table.add_row(name, model_id)
+            found += 1
+
+    console.print(table)
+    console.print(f"\n[dim]{found} model(s) found[/]")
